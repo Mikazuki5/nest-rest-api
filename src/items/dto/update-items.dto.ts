@@ -6,8 +6,9 @@ import {
   MaxLength,
 } from 'class-validator';
 
-export class CreateItemsDTO {
-  @IsNotEmpty()
+export class UpdateItemsDTO {
+  @IsOptional()
+  @IsNotEmpty({ message: "Product name can't be empty" })
   @IsString()
   productName: string;
 
@@ -16,14 +17,17 @@ export class CreateItemsDTO {
   @IsString()
   productDescription: string;
 
+  @IsOptional()
   @IsNotEmpty()
   @IsNumber()
   qty: number;
 
   @IsOptional()
+  @IsNotEmpty()
   @IsString()
   brand: string;
 
+  @IsOptional()
   @IsNotEmpty()
   @IsString()
   category: string;

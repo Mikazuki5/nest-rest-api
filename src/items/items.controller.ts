@@ -6,17 +6,22 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { ItemsInterface } from './intefaces/item-interface';
+
+import { Query as ExpressQuery } from 'express-serve-static-core';
+import { CreateItemsDTO } from './dto/create-items.dto';
+import { UpdateItemsDTO } from './dto/update-items.dto';
 
 @Controller('items')
 export class ItemsController {
   constructor(private readonly itemService: ItemsService) {}
 
   @Get()
-  findAll(): Promise<ItemsInterface[]> {
-    return this.itemService.getAllData();
+  async findAll(@Query() query: ExpressQuery): Promise<ItemsInterface[]> {
+    return this.itemService.getAllData(query);
   }
 
   @Get('/detail/:id')
@@ -25,7 +30,7 @@ export class ItemsController {
   }
 
   @Post()
-  create(@Body() createItemsDTO: ItemsInterface): Promise<ItemsInterface> {
+  create(@Body() createItemsDTO: CreateItemsDTO): Promise<ItemsInterface> {
     return this.itemService.create(createItemsDTO);
   }
 
@@ -36,7 +41,7 @@ export class ItemsController {
 
   @Put(':id')
   updateItems(
-    @Body() payload: ItemsInterface,
+    @Body() payload: UpdateItemsDTO,
     @Param('id') id: string,
   ): Promise<ItemsInterface> {
     return this.itemService.updateData(id, payload);

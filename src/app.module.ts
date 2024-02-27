@@ -4,10 +4,17 @@ import { AppService } from './app.service';
 import { ItemsModule } from './items/items.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import config from './config/keys';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [ItemsModule, MongooseModule.forRoot(config.mongoURI)],
+  imports: [
+    ItemsModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    MongooseModule.forRoot(process.env.mongoURI),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

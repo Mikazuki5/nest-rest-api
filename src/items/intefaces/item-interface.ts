@@ -1,9 +1,10 @@
 export interface ItemsInterface {
   id?: string;
-  name: string;
-  description: string;
+  productName: string;
+  productDescription: string;
   qty: number;
   createdAt?: Date | null;
   updatedAt?: Date | null;
   brand: string;
+  category: string;
 }
