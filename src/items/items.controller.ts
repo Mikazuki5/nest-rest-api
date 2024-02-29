@@ -7,6 +7,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { ItemsInterface } from './intefaces/item-interface';
@@ -15,7 +16,10 @@ import { Query as ExpressQuery } from 'express-serve-static-core';
 import { CreateItemsDTO } from './dto/create-items.dto';
 import { UpdateItemsDTO } from './dto/update-items.dto';
 
+import { AuthGuard } from '@nestjs/passport';
+
 @Controller('items')
+@UseGuards(AuthGuard())
 export class ItemsController {
   constructor(private readonly itemService: ItemsService) {}
 
