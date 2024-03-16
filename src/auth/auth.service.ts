@@ -33,7 +33,11 @@ export class AuthService {
     return { access_token };
   }
 
-  async login(loginDTO: LoginDTO): Promise<{ access_token: string }> {
+  async login(loginDTO: LoginDTO): Promise<{
+    access_token: string;
+    expire_token: Date;
+    refresh_token: string;
+  }> {
     const { email, password } = loginDTO;
 
     const user = await this.userModel.findOne({ email });
@@ -50,6 +54,15 @@ export class AuthService {
 
     const access_token = this.jwtService.sign({ id: user._id });
 
-    return { access_token };
+    const refresh_token = this.jwtService.sign(
+      { id: user._id },
+      { expiresIn: '7d' },
+    );
+
+    return {
+      access_token,
+      expire_token: new Date(Date.now() + 3600000),
+      refresh_token,
+    };
   }
 }
